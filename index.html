@@ -52,6 +52,11 @@ button{
   border-radius:10px;
   max-width:650px;
 }
+
+.danger{
+  background:#ff6b6b;
+  color:white;
+}
 </style>
 </head>
 
@@ -75,6 +80,7 @@ button{
 <button onclick="send()">役を発表</button>
 
 <h2>みんなの発表</h2>
+<button class="danger" onclick="resetRound()">次のラウンドへ（全発表を消す）</button>
 <div id="list"></div>
 
 <script>
@@ -205,6 +211,24 @@ function deleteAnswer(id){
   if(confirm("この発表を消す？")){
     db.collection("answers").doc(id).delete();
   }
+}
+
+function resetRound(){
+  if(!confirm("全員の発表を消して次のラウンドに進む？")){
+    return;
+  }
+
+  db.collection("answers").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      db.collection("answers").doc(doc.id).delete();
+    });
+  });
+
+  myHand = [];
+  selected = [];
+  exchanged = false;
+  document.getElementById("myHand").innerHTML = "";
+  document.getElementById("answer").value = "";
 }
 
 db.collection("answers").orderBy("time").onSnapshot(snapshot=>{
