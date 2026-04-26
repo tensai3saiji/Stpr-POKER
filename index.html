@@ -48,12 +48,26 @@ function send(){
 
 db.collection("answers").orderBy("time").onSnapshot(snapshot => {
   let html = "";
+
   snapshot.forEach(doc => {
     const data = doc.data();
-    html += `<p>${data.name}: ${data.answer}</p>`;
+
+    html += `
+      <div style="margin:15px; padding:10px; border:1px solid #555;">
+        <p>${data.name}: ${data.answer}</p>
+        <button onclick="vote('${doc.id}')">投票</button>
+        <span> ${data.votes || 0}票</span>
+      </div>
+    `;
   });
+
   document.getElementById("list").innerHTML = html;
 });
+  function vote(id){
+  db.collection("answers").doc(id).update({
+    votes: firebase.firestore.FieldValue.increment(1)
+  });
+}
 </script>
 
 </body>
