@@ -207,9 +207,9 @@ db.collection("answers").orderBy("time").onSnapshot(snapshot=>{
   snapshot.forEach(doc=>{
     const data = doc.data();
 
-    const handHtml = data.hand.map(card =>
-      `<span class="card">${card}</span>`
-    ).join("");
+    const handHtml = data.hand
+      ? data.hand.map(card => `<span class="card">${card}</span>`).join("")
+      : "";
 
     html += `
       <div class="box">
