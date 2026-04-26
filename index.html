@@ -36,12 +36,29 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 function send(){
+  const cards = [
+  "莉犬", "るぅと", "さとみ", "ジェル", "ななもり。",
+  "ばぁう", "てるとくん", "しゆん", "タケヤキ翔", "からつけあっきぃ",
+  "ぷりっつ", "まぜ太", "あっと", "ちぐさくん", "けちゃ", "心音", "Lapis", "メルト・ダ・テンシ",
+  "みかさくん", "ロゼ", "明雷らいと", "らお", "ゆたくん",
+  "たちばな", "おさでい", "だいきり", "やなと", "にしき", "パルオ", "つきしろやしろ。", "まひろまる。",
+  "ものくろ", "そあら", "はりま"
+];
+
+function drawCards(){
+  const shuffled = [...cards].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 5);
+}
+
+function send(){
   const name = document.getElementById("name").value;
   const answer = document.getElementById("answer").value;
+  const hand = drawCards();
 
   db.collection("answers").add({
     name,
     answer,
+    hand,
     votes: 0,
     time: Date.now()
   });
@@ -53,14 +70,23 @@ db.collection("answers").orderBy("time").onSnapshot(snapshot => {
   snapshot.forEach(doc => {
     const data = doc.data();
 
+    const handHtml = data.hand
+      ? data.hand.map(card => `<span style="display:inline-block;background:white;color:black;padding:8px;margin:4px;border-radius:8px;">${card}</span>`).join("")
+      : "";
+
     html += `
       <div style="margin:15px; padding:10px; border:1px solid #555;">
-        <p>${data.name}: ${data.answer}</p>
+        <h3>${data.name}</h3>
+        <div>${handHtml}</div>
+        <p>役：${data.answer}</p>
         <button onclick="vote('${doc.id}')">投票</button>
         <span> ${data.votes || 0}票</span>
       </div>
     `;
   });
+
+  document.getElementById("list").innerHTML = html;
+});
 
   document.getElementById("list").innerHTML = html;
 });
