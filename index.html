@@ -201,6 +201,12 @@ function vote(id){
   });
 }
 
+function deleteAnswer(id){
+  if(confirm("この発表を消す？")){
+    db.collection("answers").doc(id).delete();
+  }
+}
+
 db.collection("answers").orderBy("time").onSnapshot(snapshot=>{
   let html = "";
 
@@ -218,6 +224,8 @@ db.collection("answers").orderBy("time").onSnapshot(snapshot=>{
         <p>役：${data.answer}</p>
         <button onclick="vote('${doc.id}')">投票</button>
         <span>${data.votes || 0}票</span>
+        <br>
+        <button onclick="deleteAnswer('${doc.id}')">発表を消す</button>
       </div>
     `;
   });
