@@ -20,8 +20,8 @@ body{
 input{
   padding:10px;
   margin:5px;
-  border-radius:8px;
   border:none;
+  border-radius:8px;
 }
 
 button{
@@ -49,8 +49,8 @@ button{
   margin:15px auto;
   padding:10px;
   border:1px solid #555;
-  max-width:600px;
   border-radius:10px;
+  max-width:650px;
 }
 </style>
 </head>
@@ -86,7 +86,7 @@ const firebaseConfig = {
   messagingSenderId: "272158826675",
   appId: "1:272158826675:web:c6487013df9d9bc4e990c6",
   measurementId: "G-KJJNRKQ8Z6"
-};",
+};
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -121,10 +121,10 @@ function showMyHand(){
   let html = "";
 
   myHand.forEach((card,index)=>{
-    const isSelected = selected.includes(index);
+    const active = selected.includes(index);
 
     html += `
-      <span class="card ${isSelected ? "selected" : ""}"
+      <span class="card ${active ? "selected" : ""}"
       onclick="selectCard(${index})">
       ${card}
       </span>
@@ -156,7 +156,7 @@ function exchangeCards(){
   }
 
   if(selected.length === 0){
-    alert("交換したいカードを選んでね！");
+    alert("交換するカードを選んでね！");
     return;
   }
 
