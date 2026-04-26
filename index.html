@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>人名ポーカー</title>
+<title>STPRポーカー</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -16,7 +16,7 @@ button { padding:10px; }
 
 <body>
 
-<h1>🌐 人名ポーカー</h1>
+<h1>🌐 STPRポーカー</h1>
 
 <input id="name" placeholder="名前">
 <input id="answer" placeholder="役を書く">
@@ -42,6 +42,7 @@ function send(){
   db.collection("answers").add({
     name,
     answer,
+    votes: 0,
     time: Date.now()
   });
 }
